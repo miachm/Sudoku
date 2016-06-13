@@ -12,17 +12,21 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/NewGame"/>
+        android:text="@string/NewGame"
+        android:onClick="newGame"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Settings"/>
+        android:text="@string/Settings"
+        android:onClick="launchSettings"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/About"/>
+        android:text="@string/About"
+        android:onClick="about"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Exit"/>
+        android:text="@string/Exit"
+        android:onClick="exit"/>
 </LinearLayout>
