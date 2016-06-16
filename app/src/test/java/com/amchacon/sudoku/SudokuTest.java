@@ -10,8 +10,8 @@ import static org.junit.Assert.*;
 public class SudokuTest {
     @Test
     public void fillNumbers() throws Exception {
-        // Test generate 10 sudoku
-        for (int l = 0;l < 10;l++) {
+        // Test generate 3 sudoku
+        for (int l = 0;l < 3;l++) {
             Sudoku sudoku = new Sudoku();
 
             int mat[][] = sudoku.getSolution();

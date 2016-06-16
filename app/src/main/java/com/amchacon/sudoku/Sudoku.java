@@ -3,6 +3,10 @@ package com.amchacon.sudoku;
 import android.provider.Settings;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  *
  * Created by MiguelPC on 15/06/2016.
@@ -16,9 +20,6 @@ public class Sudoku {
     public Sudoku()
     {
         generate();
-
-        for (int i = 0;i < solution.length;i++)
-            System.arraycopy(solution[i],0,current[i],0,solution[i].length);
     }
 
     public int[][] getSolution() {
@@ -33,6 +34,7 @@ public class Sudoku {
     private void generate()
     {
         fillMat();
+        copy();
         deleteSomeNumbers();
     }
 
@@ -121,8 +123,54 @@ public class Sudoku {
                 solution[i][j] = -1;
     }
 
+    private void copy()
+    {
+        for (int i = 0;i < solution.length;i++)
+            System.arraycopy(solution[i],0,current[i],0,solution[i].length);
+    }
+
+    class Position
+    {
+        int x,y;
+
+        Position(int x,int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     private void deleteSomeNumbers()
     {
+        List<Position> positions = generateArrayPositions();
 
+        Collections.shuffle(positions);
+
+        while (!positions.isEmpty())
+        {
+            Position pos_current = positions.remove(0);
+
+            int value = current[pos_current.x][pos_current.y];
+            current[pos_current.x][pos_current.y] = -1;
+
+            if (!SudokuSolver.uniqueSolution(current))
+            {
+                current[pos_current.x][pos_current.y] = value;
+            }
+        }
+    }
+
+    private List<Position> generateArrayPositions()
+    {
+        List<Position> positions = new ArrayList<Position>();
+
+        for (int i = 0;i < TAM;i++)
+        {
+            for (int j = 0;j < TAM;j++)
+            {
+                positions.add(new Position(i,j));
+            }
+        }
+        return positions;
     }
 }
