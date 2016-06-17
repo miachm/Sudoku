@@ -10,7 +10,7 @@ import java.util.List;
 public class SudokuGenerator {
     public static final int TAM = Sudoku.TAM;
     public static final int root = (int)Math.sqrt(TAM);
-    public static final int VOID = -1;
+    public static final int VOID = Sudoku.VOID;
 
     public static void generate(int[][] sudoku,int[][] sudoku_solved)
     {

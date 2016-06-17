@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class SudokuSolver {
 
-    public static final int VOID = SudokuGenerator.VOID;
+    public static final int VOID = Sudoku.VOID;
 
     public static boolean uniqueSolution(int mat[][])
     {
@@ -53,7 +53,7 @@ public class SudokuSolver {
         }
     }
 
-    private static List<Integer> getPossibilities(final int mat[][],int x,int y)
+    public static List<Integer> getPossibilities(final int mat[][],int x,int y)
     {
         List<Integer> possibilities = new ArrayList<Integer>();
         for (int i = 0;i < mat.length;i++)
