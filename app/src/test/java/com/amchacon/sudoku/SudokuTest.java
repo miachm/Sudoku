@@ -1,5 +1,7 @@
 package com.amchacon.sudoku;
 
+import com.amchacon.sudoku.logic.Sudoku;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

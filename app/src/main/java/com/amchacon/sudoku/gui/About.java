@@ -1,7 +1,9 @@
-package com.amchacon.sudoku;
+package com.amchacon.sudoku.gui;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.amchacon.sudoku.R;
 
 /**
  * Created by MiguelPC on 13/06/2016.

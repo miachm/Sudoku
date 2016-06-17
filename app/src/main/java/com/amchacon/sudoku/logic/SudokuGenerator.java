@@ -1,47 +1,26 @@
-package com.amchacon.sudoku;
-
-import android.provider.Settings;
-import android.util.Log;
+package com.amchacon.sudoku.logic;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- *
- * Created by MiguelPC on 15/06/2016.
+ * Created by MiguelPC on 16/06/2016.
  */
-public class Sudoku {
-    public static final int TAM = 9;
+public class SudokuGenerator {
+    public static final int TAM = Sudoku.TAM;
+    public static final int root = (int)Math.sqrt(TAM);
+    public static final int VOID = -1;
 
-    private int solution[][] = new int[TAM][TAM];
-    private int current[][] = new int[TAM][TAM];
-
-    public Sudoku()
+    public static void generate(int[][] sudoku,int[][] sudoku_solved)
     {
-        generate();
+        fillMat(sudoku_solved);
+        copy(sudoku_solved,sudoku);
+        deleteSomeNumbers(sudoku);
     }
 
-    public int[][] getSolution() {
-        return solution;
-    }
-
-    public int[][] getCurrent()
-    {
-        return current;
-    }
-
-    private void generate()
-    {
-        fillMat();
-        copy();
-        deleteSomeNumbers();
-    }
-
-    private void fillMat() {
-        clearMat();
-
-        int root = (int)Math.sqrt(TAM);
+    private static void fillMat(int solution[][]) {
+        clearMat(solution);
 
         boolean values_tested_in_field[][][] = new boolean[TAM][TAM][TAM];
         boolean values_in_row[][] = new boolean[TAM][TAM];
@@ -55,14 +34,14 @@ public class Sudoku {
                 int value;
                 boolean fallo;
 
-                if (solution[i][j] >= 0) // Si ya contenía algo, quitamos sus valores de las tablas
+                if (!isEmpty(solution[i][j]))
                 {
                     value = solution[i][j] - 1;
 
                     values_in_row[j][value] = false;
                     values_in_column[i][value] = false;
                     values_in_square[subSquare(i,j,root)][value] = false;
-                    solution[i][j] = -1;
+                    solution[i][j] = VOID;
                 }
 
                 value = Random(TAM);
@@ -106,41 +85,35 @@ public class Sudoku {
 
     }
 
+    public static boolean isEmpty(int n)
+    {
+        return n == VOID;
+    }
+
     public static int subSquare(int i,int j,int root)
     {
         return (i/root+(j/root)*root);
     }
 
-    private int Random(int TAM)
+    private static int Random(int TAM)
     {
         return (int)Math.floor(Math.random()*TAM)+1;
     }
 
-    private void clearMat()
+    private static void clearMat(int solution[][])
     {
         for (int i = 0;i < solution.length;i++)
             for (int j = 0;j < solution[i].length;j++)
-                solution[i][j] = -1;
+                solution[i][j] = VOID;
     }
 
-    private void copy()
+    private static void copy(int src[][],int dest[][])
     {
-        for (int i = 0;i < solution.length;i++)
-            System.arraycopy(solution[i],0,current[i],0,solution[i].length);
+        for (int i = 0;i < src.length;i++)
+            System.arraycopy(src[i],0,dest[i],0,src[i].length);
     }
 
-    class Position
-    {
-        int x,y;
-
-        Position(int x,int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    private void deleteSomeNumbers()
+    private static void deleteSomeNumbers(int current[][])
     {
         List<Position> positions = generateArrayPositions();
 
@@ -151,7 +124,7 @@ public class Sudoku {
             Position pos_current = positions.remove(0);
 
             int value = current[pos_current.x][pos_current.y];
-            current[pos_current.x][pos_current.y] = -1;
+            current[pos_current.x][pos_current.y] = VOID;
 
             if (!SudokuSolver.uniqueSolution(current))
             {
@@ -160,7 +133,7 @@ public class Sudoku {
         }
     }
 
-    private List<Position> generateArrayPositions()
+    private static List<Position> generateArrayPositions()
     {
         List<Position> positions = new ArrayList<Position>();
 
