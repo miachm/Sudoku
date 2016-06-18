@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Sudoku {
     public static final int TAM = 9;
+    public static final int TAM_SQUARE = (int)Math.sqrt(TAM);
     public static final int VOID = -1;
 
     private int solution[][] = new int[TAM][TAM];

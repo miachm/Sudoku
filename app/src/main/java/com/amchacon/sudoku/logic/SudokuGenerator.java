@@ -9,10 +9,10 @@ import java.util.List;
  */
 public class SudokuGenerator {
     public static final int TAM = Sudoku.TAM;
-    public static final int root = (int)Math.sqrt(TAM);
+    public static final int TAM_SQUARE = Sudoku.TAM_SQUARE;
     public static final int VOID = Sudoku.VOID;
 
-    public static void generate(int[][] sudoku,int[][] sudoku_solved)
+    public static void generate(int[][] sudoku_solved,int[][] sudoku)
     {
         fillMat(sudoku_solved);
         copy(sudoku_solved,sudoku);
@@ -40,7 +40,7 @@ public class SudokuGenerator {
 
                     values_in_row[j][value] = false;
                     values_in_column[i][value] = false;
-                    values_in_square[subSquare(i,j,root)][value] = false;
+                    values_in_square[subSquare(i,j)][value] = false;
                     solution[i][j] = VOID;
                 }
 
@@ -52,7 +52,7 @@ public class SudokuGenerator {
                     failed = values_tested_in_field[i][j][value]
                             || values_in_row[j][value]
                             || values_in_column[i][value]
-                            || values_in_square[subSquare(i,j,root)][value];
+                            || values_in_square[subSquare(i,j)][value];
 
                     counter++;
                 } while (failed && counter < TAM);
@@ -63,7 +63,7 @@ public class SudokuGenerator {
                     values_tested_in_field[i][j][value] = true;
                     values_in_row[j][value] = true;
                     values_in_column[i][value] = true;
-                    values_in_square[subSquare(i,j,root)][value] = true;
+                    values_in_square[subSquare(i,j)][value] = true;
                 }
                 else // Backtracking
                 {
@@ -90,9 +90,9 @@ public class SudokuGenerator {
         return n == VOID;
     }
 
-    public static int subSquare(int i,int j,int root)
+    public static int subSquare(int i,int j)
     {
-        return (i/root+(j/root)*root);
+        return (i/TAM_SQUARE+(j/TAM_SQUARE)*TAM_SQUARE);
     }
 
     private static int Random(int TAM)
