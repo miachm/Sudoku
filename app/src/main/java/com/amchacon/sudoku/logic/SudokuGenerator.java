@@ -32,7 +32,7 @@ public class SudokuGenerator {
             for (int j = 0;j < TAM;j++)
             {
                 int value;
-                boolean fallo;
+                boolean failed;
 
                 if (!isEmpty(solution[i][j]))
                 {
@@ -49,15 +49,15 @@ public class SudokuGenerator {
                 int counter = 0;
                 do {
                     value = (value+1) % TAM;
-                    fallo = values_tested_in_field[i][j][value]
+                    failed = values_tested_in_field[i][j][value]
                             || values_in_row[j][value]
                             || values_in_column[i][value]
                             || values_in_square[subSquare(i,j,root)][value];
 
                     counter++;
-                } while (fallo && counter < TAM);
+                } while (failed && counter < TAM);
 
-                if (!fallo)
+                if (!failed)
                 {
                     solution[i][j] = value+1; // Nummbers in 0-8 format to 1-9 format
                     values_tested_in_field[i][j][value] = true;
