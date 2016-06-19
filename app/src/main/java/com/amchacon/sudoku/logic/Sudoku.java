@@ -33,7 +33,7 @@ public class Sudoku {
 
     public void setValueInPos(Position pos,int value)
     {
-        current[pos.y][pos.x] = value;
+        current[pos.x][pos.y] = value;
     }
 
     public boolean fieldIsCorrect(Position pos)

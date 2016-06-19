@@ -1,12 +1,16 @@
 package com.amchacon.sudoku.gui;
 
+import android.app.Dialog;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.amchacon.sudoku.R;
+import com.amchacon.sudoku.logic.Position;
 import com.amchacon.sudoku.logic.Sudoku;
 
 /**
@@ -18,6 +22,9 @@ public class SudokuView extends View {
     private Paint normallines;
     private Paint numbers_style;
     private float width_cell,height_cell;
+    private Position selected;
+
+    private static final String TAG = "SudokuView";
 
     public SudokuView(SudokuPlay sudokuPlay) {
         super(sudokuPlay);
@@ -27,6 +34,8 @@ public class SudokuView extends View {
         setFocusableInTouchMode(true);
 
         createPaints();
+
+        selected = new Position(0,0);
     }
 
     private void createPaints()
@@ -57,6 +66,7 @@ public class SudokuView extends View {
     @Override
     protected void onDraw(Canvas canvas)
     {
+        Log.d(TAG,"onDraw");
         drawBoard(canvas);
         putNumbers(canvas);
     }
@@ -95,5 +105,45 @@ public class SudokuView extends View {
                 canvas.drawText(""+mat[i][j],i*width_cell+width_cell/3.0f,j*height_cell+2*height_cell/3.0f,numbers_style);
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        if (event.getAction() != MotionEvent.ACTION_DOWN)
+            return super.onTouchEvent(event);
+
+        int x = (int) (event.getX() / width_cell);
+        int y = (int) (event.getY() / height_cell);
+
+        selected.x = x;
+        selected.y = y;
+
+        launchKeyboard();
+
+        return true;
+    }
+
+    private void launchKeyboard() {
+        Dialog k = new Keypad(activity);
+        k.show();
+    }
+
+    public void setSelectedTitleTo(int value)
+    {
+        Log.d(TAG,"Put " + value + " in (" + selected.x + " , " + selected.y + ")");
+
+        activity.getSudoku().setValueInPos(selected,value);
+        redrawTitle(selected);
+    }
+
+    private void redrawTitle(Position pos)
+    {
+        int top = (int)(pos.y*height_cell);
+        int bottom = (int)(top + height_cell);
+        int left = (int) (pos.x * width_cell);
+        int right = (int) (left + width_cell);
+
+        invalidate(left,top,right,bottom);
     }
 }
