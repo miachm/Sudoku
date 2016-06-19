@@ -150,7 +150,7 @@ public class SudokuView extends View {
         redrawTitle(selected);
 
         if (activity.getSudoku().isTerminated())
-            Toast.makeText(activity,"Finished! Good job ^^",Toast.LENGTH_LONG);
+            Toast.makeText(activity,"Finished! Good job ^^",Toast.LENGTH_LONG).show();
     }
 
     private void redrawTitle(Position pos)
