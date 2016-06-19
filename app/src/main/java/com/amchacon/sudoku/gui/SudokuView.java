@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.amchacon.sudoku.R;
 import com.amchacon.sudoku.logic.Position;
@@ -21,6 +22,7 @@ public class SudokuView extends View {
     private Paint highlightlines;
     private Paint normallines;
     private Paint numbers_style;
+    private Paint numbers_user_style;
     private float width_cell,height_cell;
     private Position selected;
 
@@ -49,6 +51,9 @@ public class SudokuView extends View {
 
         numbers_style = new Paint();
         numbers_style.setColor(Color.BLACK);
+
+        numbers_user_style = new Paint();
+        numbers_user_style.setColor(ContextCompat.getColor(activity,R.color.numbersUser));
     }
 
     @Override
@@ -59,6 +64,7 @@ public class SudokuView extends View {
 
         float min = Math.min(width_cell,height_cell);
         numbers_style.setTextSize(min/2.0f);
+        numbers_user_style.setTextSize(min/2.0f);
 
         super.onSizeChanged(w,h,oldw,oldh);
     }
@@ -94,15 +100,21 @@ public class SudokuView extends View {
 
     private void putNumbers(Canvas canvas)
     {
-        int mat[][] = activity.getSudoku().getCurrent();
+        Sudoku sudoku = activity.getSudoku();
+        int mat[][] = sudoku.getCurrent();
 
+        Paint style;
         for (int i = 0;i < mat.length;i++)
         {
             for (int j = 0;j < mat[i].length;j++)
             {
                 if (mat[i][j] == Sudoku.VOID) continue;
+                if (sudoku.initiallyEmpty(i,j))
+                    style = numbers_user_style;
+                else
+                    style = numbers_style;
 
-                canvas.drawText(""+mat[i][j],i*width_cell+width_cell/3.0f,j*height_cell+2*height_cell/3.0f,numbers_style);
+                canvas.drawText(""+mat[i][j],i*width_cell+width_cell/3.0f,j*height_cell+2*height_cell/3.0f,style);
             }
         }
     }
@@ -119,7 +131,8 @@ public class SudokuView extends View {
         selected.x = x;
         selected.y = y;
 
-        launchKeyboard();
+        if (activity.getSudoku().initiallyEmpty(selected))
+            launchKeyboard();
 
         return true;
     }
@@ -135,6 +148,9 @@ public class SudokuView extends View {
 
         activity.getSudoku().setValueInPos(selected,value);
         redrawTitle(selected);
+
+        if (activity.getSudoku().isTerminated())
+            Toast.makeText(activity,"Finished! Good job ^^",Toast.LENGTH_LONG);
     }
 
     private void redrawTitle(Position pos)

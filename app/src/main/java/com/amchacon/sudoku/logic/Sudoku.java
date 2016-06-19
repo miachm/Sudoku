@@ -16,10 +16,19 @@ public class Sudoku {
 
     private int solution[][] = new int[TAM][TAM];
     private int current[][] = new int[TAM][TAM];
+    private boolean initially_empty[][] = new boolean[TAM][TAM];
 
     public Sudoku()
     {
         SudokuGenerator.generate(solution,current);
+        initialize();
+    }
+
+    private void initialize()
+    {
+        for (int i = 0;i < current.length;i++)
+            for (int j = 0;j < current[0].length;j++)
+                initially_empty[i][j] = (current[i][j] == VOID);
     }
 
     public final int[][] getSolution() {
@@ -38,7 +47,17 @@ public class Sudoku {
 
     public boolean fieldIsCorrect(Position pos)
     {
-        return current[pos.y][pos.x] == solution[pos.y][pos.x];
+        return current[pos.x][pos.y] == solution[pos.x][pos.y];
+    }
+
+    public boolean initiallyEmpty(Position pos)
+    {
+        return initiallyEmpty(pos.x,pos.y);
+    }
+
+    public boolean initiallyEmpty(int x,int y)
+    {
+        return initially_empty[x][y];
     }
 
     public List<Integer> getPossibilities(Position pos)

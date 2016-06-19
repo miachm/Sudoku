@@ -66,6 +66,7 @@ public class Keypad extends Dialog {
             @Override
             public void onClick(View v) {
                 sudoku.setSelectedTitleTo(Sudoku.VOID);
+                dismiss();
             }
         });
     }
