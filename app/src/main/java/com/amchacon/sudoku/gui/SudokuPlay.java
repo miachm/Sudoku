@@ -27,4 +27,9 @@ public class SudokuPlay extends Activity {
     {
         return sudoku;
     }
+
+    public void setSelectedTitleTo(int value)
+    {
+        view.setSelectedTitleTo(value);
+    }
 }
